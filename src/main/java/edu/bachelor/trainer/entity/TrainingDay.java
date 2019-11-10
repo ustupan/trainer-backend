@@ -23,7 +23,7 @@ public class TrainingDay {
     @Column
     private String description;
     @Column
-    private LocalDate resultDate;
+    private LocalDate trainingDate;
     @Column
     private String note;
     @Column
