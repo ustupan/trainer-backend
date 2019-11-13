@@ -1,5 +1,6 @@
 package edu.bachelor.trainer.security;
 
+import edu.bachelor.trainer.configuration.SecurityConstants;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -26,11 +27,13 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
         setFilterProcessesUrl(SecurityConstants.AUTH_LOGIN_URL);
     }
 
+
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
         String username = request.getParameter("username");
-        String  password = request.getParameter("password");
+        String password = request.getParameter("password");
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+
         return authenticationManager.authenticate(authenticationToken);
     }
 
@@ -49,7 +52,7 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         String token = Jwts.builder()
                 .signWith(SignatureAlgorithm.HS512, signingKey)
-                .setHeaderParam("typ", SecurityConstants.TOKEN_TYPE)
+                .setHeaderParam("type", SecurityConstants.TOKEN_TYPE)
                 .setIssuer(SecurityConstants.TOKEN_ISSUER)
                 .setAudience(SecurityConstants.TOKEN_AUDIENCE)
                 .setSubject(user.getUsername())

@@ -1,5 +1,6 @@
 package edu.bachelor.trainer.security;
 
+import edu.bachelor.trainer.configuration.SecurityConstants;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,8 +16,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
@@ -46,15 +47,22 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
             try{
 
                 byte[] signingKey = SecurityConstants.JWT_SECRET.getBytes();
+
+
                 Jws<Claims> claimsJws = Jwts.parser()
                         .setSigningKey(signingKey)
-                        .parseClaimsJws(requestToken.replace("Bearer",""));
+                        .parseClaimsJws(requestToken.replace(SecurityConstants.TOKEN_PREFIX,""));
 
-                String userName = claimsJws.getBody().get("userName").toString();
-                String role = claimsJws.getBody().get("role").toString();
-                Set<SimpleGrantedAuthority> simpleGrantedAuthorities = Collections.singleton(new SimpleGrantedAuthority(role));
+                String username = claimsJws.getBody().getSubject();
+//                Set<?> authoraities = ((Set<?>) claimsJws.getBody()
+//                        .get("role"));
 
-                if (userName != null) return new UsernamePasswordAuthenticationToken(userName, null, simpleGrantedAuthorities);
+                List<SimpleGrantedAuthority> authorities = ((List<?>) claimsJws.getBody()
+                        .get("role")).stream()
+                        .map(authority -> new SimpleGrantedAuthority((String) authority))
+                        .collect(Collectors.toList());
+
+                if (username != null) return new UsernamePasswordAuthenticationToken(username, null, authorities);
 
             } catch (ExpiredJwtException exception) {
                 log.warn("Request to parse expired JWT : {} failed : {}", requestToken, exception.getMessage());

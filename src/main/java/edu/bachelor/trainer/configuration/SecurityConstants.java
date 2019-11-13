@@ -1,4 +1,4 @@
-package edu.bachelor.trainer.security;
+package edu.bachelor.trainer.configuration;
 
 public final class SecurityConstants {
     public static final String AUTH_LOGIN_URL = "/api/authenticate";

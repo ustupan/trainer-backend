@@ -1,9 +1,7 @@
 package edu.bachelor.trainer.repository.entities;
 
 import edu.bachelor.trainer.common.Gender;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -16,12 +14,15 @@ import java.util.Set;
 @Setter
 public class User {
 
+    public User(){
+    }
+
     @Id
     @GeneratedValue (strategy = GenerationType.AUTO)
     @Column
     private Long id;
     @Column
-    private String login;
+    private String username;
     @Column
     private String email;
     @Column
@@ -29,13 +30,12 @@ public class User {
     @Column
     private Gender gender;
     @Column
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-    @Column
-    @ManyToMany
-    private Set<User> friends;
+
+
 }

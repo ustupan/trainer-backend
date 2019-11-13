@@ -13,6 +13,10 @@ import java.util.Set;
 @Getter
 @Setter
 public class Role {
+
+    Role(){
+
+    }
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
