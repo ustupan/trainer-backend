@@ -2,7 +2,7 @@ package edu.bachelor.trainer.configuration;
 
 import edu.bachelor.trainer.security.JwtAuthenticationFilter;
 import edu.bachelor.trainer.security.JwtAuthorizationFilter;
-import edu.bachelor.trainer.user.services.imp.CustomUserDetailsService;
+import edu.bachelor.trainer.security.authorization.services.imp.CustomUserDetailsService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -32,18 +32,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors().and()
-                .csrf().disable()
+                .csrf().disable() // TODO usunac
                 .authorizeRequests()
-                .antMatchers("/api/public").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/public/**").permitAll()
+                .antMatchers("/user/**").hasRole("USER")
+                .antMatchers("/trainer/**").hasRole("TRAINER")
+                .antMatchers("/athlete/**").hasRole("ATHLETE")
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager()))
                 .addFilter(new JwtAuthorizationFilter(authenticationManager()))
+
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    //dotad spoko chyba jeszcze zobaczyc u amadiego...
 
 
     @Override

@@ -1,6 +1,8 @@
 package edu.bachelor.trainer.security;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import edu.bachelor.trainer.configuration.SecurityConstants;
+import edu.bachelor.trainer.security.authorization.controllers.dtos.UserAuthorizationDto;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,6 +15,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import javax.servlet.FilterChain;
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,10 +32,9 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 
     @Override
-    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) {
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
+    public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse respons) {
+        UserAuthorizationDto userAuthorizationDto = parseLoginData(request);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userAuthorizationDto.getUsername(), userAuthorizationDto.getPassword());
 
         return authenticationManager.authenticate(authenticationToken);
     }
@@ -62,4 +64,14 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
         response.addHeader(SecurityConstants.TOKEN_HEADER, SecurityConstants.TOKEN_PREFIX + token);
     }
+
+    private UserAuthorizationDto parseLoginData(HttpServletRequest request) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.readValue(request.getInputStream(), UserAuthorizationDto.class);
+        } catch (IOException exception) {
+            return new UserAuthorizationDto();
+        }
+    }
+
 }

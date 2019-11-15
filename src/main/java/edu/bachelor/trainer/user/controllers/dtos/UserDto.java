@@ -1,21 +1,24 @@
-package edu.bachelor.trainer.authorization.login.controllers.dtos;
+package edu.bachelor.trainer.user.controllers.dtos;
 
 import edu.bachelor.trainer.common.Gender;
-import edu.bachelor.trainer.repository.entities.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Set;
 
+
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserDTO {
+public class UserDto {
+
+    public UserDto() {
+    }
 
     private Long id;
 
-    private String login;
+    private String username;
 
     private String email;
 
@@ -23,6 +26,6 @@ public class UserDTO {
 
     private Gender gender;
 
-    private Set<Role> roles;
+    private String roleName;
 
 }

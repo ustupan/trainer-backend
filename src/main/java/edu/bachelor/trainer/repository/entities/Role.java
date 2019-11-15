@@ -7,6 +7,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Set;
 
+
 @AllArgsConstructor
 @Table(name="Roles")
 @Entity
@@ -17,13 +18,14 @@ public class Role {
     Role(){
 
     }
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column
     private Long id;
 
     @Column
-    private String Name;
+    private String name;
 
     @ManyToMany(mappedBy = "roles")
     @Column
