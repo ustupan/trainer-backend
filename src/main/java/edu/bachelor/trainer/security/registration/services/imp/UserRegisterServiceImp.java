@@ -4,42 +4,45 @@ import edu.bachelor.trainer.repository.RoleRepository;
 import edu.bachelor.trainer.repository.UserRepository;
 import edu.bachelor.trainer.repository.entities.User;
 import edu.bachelor.trainer.security.exceptions.UndefinedRoleException;
-import edu.bachelor.trainer.security.exceptions.UserNameExistsException;
-import edu.bachelor.trainer.security.registration.services.RegisterService;
+import edu.bachelor.trainer.security.exceptions.UsernameExistsException;
+import edu.bachelor.trainer.security.registration.services.UserRegisterService;
 import edu.bachelor.trainer.user.controllers.dtos.UserDto;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Optional;
 
 @Service
-public class RegisterServiceImp implements RegisterService {
+public class UserRegisterServiceImp implements UserRegisterService {
 
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
 
-    public RegisterServiceImp(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserRegisterServiceImp(UserRepository userRepository, RoleRepository roleRepository) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
     }
 
-    @Transactional
     @Override
     public User registerNewUserAccount(UserDto accountDto)
-            throws UserNameExistsException {
+            throws UsernameExistsException, UndefinedRoleException {
 
         if (usernameExist(accountDto.getUsername())) {
-            throw new UserNameExistsException(
+            throw new UsernameExistsException(
                     "There is an account with that username: "
                             +  accountDto.getUsername());
         }
 
+        String encoded = new BCryptPasswordEncoder().encode(accountDto.getPassword());
+
         User user = new User();
         user.setUsername(accountDto.getUsername());
-        user.setPassword(accountDto.getPassword());
+        user.setPassword(encoded);
         user.setEmail(accountDto.getEmail());
         user.setRoles(Arrays.asList(createRole("ROLE_USER"), createRole(accountDto.getRoleName())));
+
+
 
         return userRepository.save(user);
     }

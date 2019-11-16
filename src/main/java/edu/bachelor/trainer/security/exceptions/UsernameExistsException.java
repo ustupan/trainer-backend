@@ -5,12 +5,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.CONFLICT)
-public class UserNameExistsException extends RuntimeException {
+public class UsernameExistsException extends RuntimeException {
 
-    public UserNameExistsException() {
+    public UsernameExistsException() {
     }
 
-    public UserNameExistsException(String s) {
+    public UsernameExistsException(String s) {
     }
 
 }

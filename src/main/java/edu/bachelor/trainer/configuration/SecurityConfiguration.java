@@ -35,6 +35,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable() // TODO usunac
                 .authorizeRequests()
                 .antMatchers("/public/**").permitAll()
+                .antMatchers("/registration/**").permitAll()
                 .antMatchers("/user/**").hasRole("USER")
                 .antMatchers("/trainer/**").hasRole("TRAINER")
                 .antMatchers("/athlete/**").hasRole("ATHLETE")
