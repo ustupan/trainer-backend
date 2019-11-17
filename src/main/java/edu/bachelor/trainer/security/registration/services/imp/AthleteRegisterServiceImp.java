@@ -4,8 +4,6 @@ package edu.bachelor.trainer.security.registration.services.imp;
 import edu.bachelor.trainer.repository.AthleteRepository;
 import edu.bachelor.trainer.repository.entities.Athlete;
 import edu.bachelor.trainer.repository.entities.User;
-import edu.bachelor.trainer.security.exceptions.UndefinedRoleException;
-import edu.bachelor.trainer.security.exceptions.UsernameExistsException;
 import edu.bachelor.trainer.security.registration.services.AthleteRegisterService;
 import edu.bachelor.trainer.security.registration.services.UserRegisterService;
 import edu.bachelor.trainer.user.controllers.dtos.UserDto;
