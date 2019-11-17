@@ -1,38 +1,34 @@
-package edu.bachelor.trainer.repository.entities;
+package edu.bachelor.trainer.calendar.controllers.dtos;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "Training_days")
-@Entity
 @Getter
 @Setter
-public class TrainingDay {
+public class TrainingDayDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column
     private Long id;
-    @Column
+
     private String title;
-    @Column
+
     private String description;
-    @Column
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
     private Date trainingDate;
-    @Column
+
     private String note;
-    @Column
+
     private Integer motivationLevel;
-    @Column
+
     private Integer dispositionLevel;
-    @ManyToOne
-    @JoinColumn(name = "calendar_id", nullable = false)
-    private Calendar calendar;
+
+    private Long calendarId;
 }
