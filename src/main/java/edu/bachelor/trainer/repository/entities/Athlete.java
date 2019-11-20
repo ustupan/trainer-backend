@@ -22,7 +22,7 @@ public class Athlete {
     @OneToOne
     private User user;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "athlete_trainer",
             joinColumns = @JoinColumn(name = "athlete_id"),
             inverseJoinColumns = @JoinColumn(name = "trainer_id")
@@ -33,4 +33,9 @@ public class Athlete {
     private Set<Result> results;
     @OneToMany(mappedBy = "athlete")
     private Set<Calendar> calendars;
+
+    public void addTrainer(Trainer trainer){
+        this.trainers.add(trainer);
+        trainer.getAthletes().add(this);
+    }
 }

@@ -19,7 +19,7 @@ public class CalendarDto {
 
     private List<Long> trainingDaysIds;
 
-    private Long athleteId;
+    private String athleteUsername;
 
     private Long trainerId;
 }

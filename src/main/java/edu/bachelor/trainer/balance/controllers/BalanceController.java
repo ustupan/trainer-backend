@@ -1,25 +1,44 @@
 package edu.bachelor.trainer.balance.controllers;
 
 
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import edu.bachelor.trainer.balance.controllers.dtos.ResultDto;
+import edu.bachelor.trainer.balance.exceptions.AthleteNotExistException;
+import edu.bachelor.trainer.balance.services.ResultService;
+import edu.bachelor.trainer.calendar.controllers.dtos.CalendarDto;
+import edu.bachelor.trainer.configuration.SecurityConstants;
+import edu.bachelor.trainer.repository.entities.Result;
+import edu.bachelor.trainer.security.JwtClaims;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
-
-
-@RequestMapping("/private")
+@RequestMapping(value = "/balance")  // TODO dodac do security config
 public class BalanceController {
 
-    @GetMapping("/admin")
-    public String test1() {
-        return "jestesm w admin";
+    private final ResultService resultService;
+
+
+    public BalanceController(ResultService resultService) {
+        this.resultService = resultService;
     }
 
-    @GetMapping("/user")
-    public String test2() {
-        return "jestesm w user";
-    }
+    @PostMapping(value = "/addResult")
+    public ResponseEntity createCalendar(@Valid @RequestBody ResultDto resultDto, BindingResult bindingResult , @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
 
+
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+        try{
+            Result result = resultService.createResult(resultDto, JwtToken);
+        }catch (AthleteNotExistException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("daasasd");
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 }

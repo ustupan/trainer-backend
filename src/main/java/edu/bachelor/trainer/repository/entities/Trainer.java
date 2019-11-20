@@ -30,4 +30,9 @@ public class Trainer {
     @Column
     private Set<Calendar> calendars;
 
+    public void addAthlete(Athlete athlete){
+        this.athletes.add(athlete);
+        athlete.getTrainers().add(this);
+    }
+
 }

@@ -6,15 +6,13 @@ import edu.bachelor.trainer.calendar.controllers.dtos.TrainingDayDto;
 import edu.bachelor.trainer.calendar.exceptions.CalendarNotExistException;
 import edu.bachelor.trainer.calendar.services.CalendarService;
 import edu.bachelor.trainer.calendar.services.TrainingDayService;
+import edu.bachelor.trainer.configuration.SecurityConstants;
 import edu.bachelor.trainer.repository.entities.Calendar;
 import edu.bachelor.trainer.repository.entities.TrainingDay;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -31,12 +29,12 @@ public class CalendarController {
     }
 
     @PostMapping(value = "/createCalendar")
-    public ResponseEntity createController(@Valid @RequestBody CalendarDto calendarDto, BindingResult bindingResult) {
+    public ResponseEntity createCalendar(@Valid @RequestBody CalendarDto calendarDto, BindingResult bindingResult, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        Calendar createdCalendar = calendarService.createCalendar(calendarDto);
+        Calendar createdCalendar = calendarService.createCalendar(calendarDto, JwtToken);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
