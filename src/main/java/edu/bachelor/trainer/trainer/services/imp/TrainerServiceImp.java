@@ -31,18 +31,13 @@ public class TrainerServiceImp implements TrainerService {
     public Trainer addAthlete(String athleteUsername, String jwtToken) {
 
         JwtClaims jwtClaims = new JwtClaims(jwtToken);
-        final Optional<Trainer> findTrainer = trainerRepository.getTrainerByUser_Username(jwtClaims.getUserUsername());
-
         Optional<Athlete> findAthlete = athleteRepository.getAthleteByUser_Username(athleteUsername);
 
         if (!findAthlete.isPresent()) {
             throw new AthleteNotExistException("No such athlete!");
         }
-        if (!findTrainer.isPresent()) {
-            throw new TrainerNotExistException("No such trainer!");
-        }
 
-        Trainer trainer = findTrainer.get();
+        Trainer trainer = getTrainerByUserUsername(jwtClaims.getUserUsername());
         Set<Athlete> athletes = trainer.getAthletes();
         Set<Athlete> filtered = athletes.stream().
                 filter(athlete -> athlete.getUser().getUsername().equals(athleteUsername)).collect(Collectors.toSet());
@@ -53,5 +48,14 @@ public class TrainerServiceImp implements TrainerService {
         trainer.addAthlete(findAthlete.get());
 
         return trainerRepository.save(trainer);
+    }
+
+    @Override
+    public Trainer getTrainerByUserUsername(String username) {
+        Optional<Trainer> findTrainer = trainerRepository.getTrainerByUser_Username(username);
+        if (!findTrainer.isPresent()) {
+            throw new TrainerNotExistException("No such trainer!");
+        }
+        return findTrainer.get();
     }
 }

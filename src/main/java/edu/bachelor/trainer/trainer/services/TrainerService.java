@@ -5,4 +5,5 @@ import edu.bachelor.trainer.repository.entities.Trainer;
 public interface TrainerService {
 
     Trainer addAthlete(String athleteUsername,String jwtToken);
+    Trainer getTrainerByUserUsername(String username);
 }

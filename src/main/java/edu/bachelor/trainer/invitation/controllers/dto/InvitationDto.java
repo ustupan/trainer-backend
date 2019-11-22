@@ -11,5 +11,9 @@ import lombok.Setter;
 @Setter
 public class InvitationDto {
 
-    
+    private Long id;
+
+    private String senderUsername;
+
+    private Boolean accepted;
 }

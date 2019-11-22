@@ -51,4 +51,6 @@ public class AthleteServiceImp implements AthleteService {
 
         return athleteRepository.save(athlete);
     }
+
+
 }

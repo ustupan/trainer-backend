@@ -19,7 +19,7 @@ public class Invitation {
     @Column
     private Long id;
     @Column
-    private String athleteUsername;
+    private String senderUsername;
     @Column
-    private String trainerUsername;
+    private String receiverUsername;
 }
