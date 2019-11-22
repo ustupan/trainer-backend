@@ -5,15 +5,18 @@ import edu.bachelor.trainer.common.exceptions.AthleteNotExistException;
 import edu.bachelor.trainer.common.exceptions.TrainerAlreadyHasAthleteException;
 import edu.bachelor.trainer.repository.AthleteRepository;
 import edu.bachelor.trainer.repository.TrainerRepository;
-import edu.bachelor.trainer.repository.entities.Athlete;
-import edu.bachelor.trainer.repository.entities.Trainer;
+import edu.bachelor.trainer.repository.entities.*;
 import edu.bachelor.trainer.security.JwtClaims;
+import edu.bachelor.trainer.trainer.controllers.dtos.*;
 import edu.bachelor.trainer.trainer.services.TrainerService;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -57,5 +60,85 @@ public class TrainerServiceImp implements TrainerService {
             throw new TrainerNotExistException("No such trainer!");
         }
         return findTrainer.get();
+    }
+
+    @Override
+    public Set<AthleteDto> getAllTrainerAthletes(String jwtToken) {
+        JwtClaims jwtClaims = new JwtClaims(jwtToken);
+        final Optional<Trainer> findTrainer = trainerRepository.getTrainerByUser_Username(jwtClaims.getUserUsername());
+        if (!findTrainer.isPresent()) {
+            throw new TrainerNotExistException("No such trainer!");
+        }
+        Trainer trainer = findTrainer.get();
+
+        Set<Athlete> athletes = findTrainer.get().getAthletes();
+
+        TrainerDto trainerDto = new TrainerDto();
+
+        return athleteDtoMapper(trainer.getAthletes(), findTrainer.get().getUser().getUsername());
+    }
+
+    private Set<AthleteDto> athleteDtoMapper(Set<Athlete> athletes, String trainerUsername){
+        Set<AthleteDto> athleteDtos = new HashSet<AthleteDto>();
+
+        Stream<AthleteDto> athleteDtoStream = athletes.stream().map(athlete -> {
+            Long id = athlete.getId();
+            String username = athlete.getUser().getUsername();
+            AthleteDto athleteDto = new AthleteDto();
+            athleteDto.setId(id);
+            athleteDto.setUserName(username);
+            athleteDto.setResults(resultDtoMapper(athlete.getResults()));
+            athleteDto.setCalendar(calendarDtoMapper(athlete.getCalendars(), trainerUsername));
+            return athleteDto;
+        });
+        return athleteDtoStream.collect(Collectors.toSet());
+    }
+
+    private Set<ResultDto> resultDtoMapper(Set<Result> results){
+        Set<ResultDto> resultDtos = new HashSet<ResultDto>();
+
+        Stream<ResultDto> resultDtoStream = results.stream().map(result -> {
+            Long id = result.getId();
+            String discipline = result.getDiscipline();
+            String description = result.getDescription();
+            Date resultDate = result.getResultDate();
+            Long value = result.getValue();
+            return new ResultDto(id,discipline,description,resultDate,value);
+        });
+
+        return resultDtoStream.collect(Collectors.toSet());
+    }
+
+    private Set<TrainingDayDto> trainingDayDtos(Set<TrainingDay> trainingDays){
+        Stream<TrainingDayDto> trainingDayDtoStream = trainingDays.stream().map(trainingDay -> {
+            Long id = trainingDay.getId();
+            String title = trainingDay.getTitle();
+            String description = trainingDay.getDescription();
+            Date trainingDate = trainingDay.getTrainingDate();
+            String note = trainingDay.getNote();
+            Integer motivationLevel = trainingDay.getMotivationLevel();
+            Integer dispositionLevel = trainingDay.getDispositionLevel();
+            return new TrainingDayDto(id, title, description, trainingDate, note, motivationLevel, dispositionLevel);
+        });
+        return trainingDayDtoStream.collect(Collectors.toSet());
+    }
+
+    private CalendarDto calendarDtoMapper(Set<Calendar> calendars, String trainerUsername){
+
+        Set<Calendar> filteredCalendars = calendars.stream().
+                filter(calendar -> calendar.getTrainer().getUser().getUsername().equals(trainerUsername)).collect(Collectors.toSet());
+
+        //todo ew sprawdzac czy nie ma wiecej niz 1 kalendarz
+
+        if(filteredCalendars.isEmpty()){
+            return null;
+        }
+        Calendar calendar = filteredCalendars.iterator().next();
+        CalendarDto calendarDto = new CalendarDto();
+        calendarDto.setId(calendar.getId());
+        calendarDto.setTitle(calendar.getTitle());
+        calendarDto.setTrainingDays(trainingDayDtos(calendar.getTrainingDays()));
+
+        return calendarDto;
     }
 }

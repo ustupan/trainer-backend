@@ -52,5 +52,17 @@ public class AthleteServiceImp implements AthleteService {
         return athleteRepository.save(athlete);
     }
 
+    @Override
+    public Set<Trainer> getAllTrainers(String jwtToken) {
+        JwtClaims jwtClaims = new JwtClaims(jwtToken);
+        final Optional<Athlete> findAthlete = athleteRepository.getAthleteByUser_Username(jwtClaims.getUserUsername());
+        if (!findAthlete.isPresent()) {
+            throw new AthleteNotExistException("No such athlete!");
+        }
+        Athlete athlete = findAthlete.get();
+
+        return athlete.getTrainers();
+    }
+
 
 }

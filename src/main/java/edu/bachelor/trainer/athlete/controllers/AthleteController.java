@@ -4,7 +4,6 @@ package edu.bachelor.trainer.athlete.controllers;
 import edu.bachelor.trainer.athlete.services.AthleteService;
 import edu.bachelor.trainer.configuration.SecurityConstants;
 import edu.bachelor.trainer.repository.entities.Athlete;
-import edu.bachelor.trainer.repository.entities.Trainer;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -30,4 +29,11 @@ public class AthleteController {
         Athlete athlete = athleteService.addTrainer(trainerUsername, JwtToken);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+//    @GetMapping(value = "/trainersList")
+//    public ResponseEntity trainersList(@RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
+//        return ResponseEntity.ok().body()
+//    }
+
+    //return ResponseEntity.ok().body(carService.getAllCarsWithParams(city, brand, priceMin, priceMax, startDate, endDate, prodDate, model));
 }

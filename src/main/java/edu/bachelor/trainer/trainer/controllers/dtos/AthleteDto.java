@@ -6,18 +6,20 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class TrainerDto {
+public class AthleteDto {
 
     private Long id;
 
     private String userName;
 
-    private Set<AthleteDto> athletes;
+    private Set<ResultDto> results;
 
+    private CalendarDto calendar;
 }

@@ -1,23 +1,23 @@
 package edu.bachelor.trainer.trainer.controllers.dtos;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
+import java.util.Date;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class TrainerDto {
+public class ResultDto {
 
     private Long id;
 
-    private String userName;
+    private String discipline;
 
-    private Set<AthleteDto> athletes;
+    private String description;
 
+    private Date resultDate; //jak cos dac w stringu
+
+    private Long value;
 }

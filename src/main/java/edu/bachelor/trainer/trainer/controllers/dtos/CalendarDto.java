@@ -1,23 +1,22 @@
 package edu.bachelor.trainer.trainer.controllers.dtos;
 
-
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Set;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class TrainerDto {
+public class CalendarDto {
 
     private Long id;
 
-    private String userName;
+    private String title;
 
-    private Set<AthleteDto> athletes;
+    private Set<TrainingDayDto> trainingDays;
 
 }
