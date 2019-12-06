@@ -38,6 +38,7 @@ public class UserRegisterServiceImp implements UserRegisterService {
 
         User user = new User();
         user.setUsername(accountDto.getUsername());
+        user.setGender(accountDto.getGender());
         user.setPassword(encoded);
         user.setEmail(accountDto.getEmail());
         user.setRoles(Arrays.asList(createRole("ROLE_USER"), createRole(accountDto.getRoleName())));

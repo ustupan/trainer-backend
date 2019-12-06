@@ -2,9 +2,9 @@ package edu.bachelor.trainer.balance.controllers;
 
 
 import edu.bachelor.trainer.balance.controllers.dtos.ResultDto;
-import edu.bachelor.trainer.balance.exceptions.AthleteNotExistException;
 import edu.bachelor.trainer.balance.services.ResultService;
 import edu.bachelor.trainer.calendar.controllers.dtos.CalendarDto;
+import edu.bachelor.trainer.common.exceptions.AthleteNotExistException;
 import edu.bachelor.trainer.configuration.SecurityConstants;
 import edu.bachelor.trainer.repository.entities.Result;
 import edu.bachelor.trainer.security.JwtClaims;
@@ -41,4 +41,13 @@ public class BalanceController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @GetMapping(value = "/getAllAthleteResults")
+    public ResponseEntity athleteList(@Valid @RequestBody Long athleteId, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
+        return ResponseEntity.ok().body(resultService.getAllResultsByAthleteId(athleteId, JwtToken));
+    }
+
+    //get my results...
+
+
 }

@@ -1,4 +1,4 @@
-package edu.bachelor.trainer.calendar.exceptions;
+package edu.bachelor.trainer.common.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,8 +1,8 @@
 package edu.bachelor.trainer.trainer.services.imp;
 
-import edu.bachelor.trainer.calendar.exceptions.TrainerNotExistException;
 import edu.bachelor.trainer.common.exceptions.AthleteNotExistException;
 import edu.bachelor.trainer.common.exceptions.TrainerAlreadyHasAthleteException;
+import edu.bachelor.trainer.common.exceptions.TrainerNotExistException;
 import edu.bachelor.trainer.repository.AthleteRepository;
 import edu.bachelor.trainer.repository.TrainerRepository;
 import edu.bachelor.trainer.repository.entities.*;
@@ -87,58 +87,69 @@ public class TrainerServiceImp implements TrainerService {
             AthleteDto athleteDto = new AthleteDto();
             athleteDto.setId(id);
             athleteDto.setUserName(username);
-            athleteDto.setResults(resultDtoMapper(athlete.getResults()));
-            athleteDto.setCalendar(calendarDtoMapper(athlete.getCalendars(), trainerUsername));
+            athleteDto.setGender(athlete.getUser().getGender());
+            athleteDto.setEmail(athlete.getUser().getEmail());
+            //athleteDto.setResultsIds(athlete.getResults().stream().map(Result::getId).collect(Collectors.toSet()));
+            //athleteDto.setCalendarId(getAthleteCalendarId(athlete.getCalendars(), trainerUsername));
             return athleteDto;
         });
         return athleteDtoStream.collect(Collectors.toSet());
     }
 
-    private Set<ResultDto> resultDtoMapper(Set<Result> results){
-        Set<ResultDto> resultDtos = new HashSet<ResultDto>();
+//    private Set<ResultDto> resultDtoMapper(Set<Result> results){
+//        Set<ResultDto> resultDtos = new HashSet<ResultDto>();
+//
+//        Stream<ResultDto> resultDtoStream = results.stream().map(result -> {
+//            Long id = result.getId();
+//            String discipline = result.getDiscipline();
+//            String description = result.getDescription();
+//            Date resultDate = result.getResultDate();
+//            Long value = result.getValue();
+//            return new ResultDto(id,discipline,description,resultDate,value);
+//        });
+//
+//        return resultDtoStream.collect(Collectors.toSet());
+//    }
+//
+//
+//    private Long getAthleteCalendarId(Set<Calendar> calendars, String trainerUsername) {
+//        Set<Calendar> filteredCalendars = calendars.stream().
+//                filter(calendar -> calendar.getTrainer().getUser().getUsername().equals(trainerUsername)).collect(Collectors.toSet());
+//        Calendar calendar = filteredCalendars.iterator().next();
+//        return calendar.getId();
+//    }
 
-        Stream<ResultDto> resultDtoStream = results.stream().map(result -> {
-            Long id = result.getId();
-            String discipline = result.getDiscipline();
-            String description = result.getDescription();
-            Date resultDate = result.getResultDate();
-            Long value = result.getValue();
-            return new ResultDto(id,discipline,description,resultDate,value);
-        });
+    //
+//    private Set<TrainingDayDto> trainingDayDtos(Set<TrainingDay> trainingDays){
+//        Stream<TrainingDayDto> trainingDayDtoStream = trainingDays.stream().map(trainingDay -> {
+//            Long id = trainingDay.getId();
+//            String title = trainingDay.getTitle();
+//            String description = trainingDay.getDescription();
+//            Date trainingDate = trainingDay.getTrainingDate();
+//            String note = trainingDay.getNote();
+//            Integer motivationLevel = trainingDay.getMotivationLevel();
+//            Integer dispositionLevel = trainingDay.getDispositionLevel();
+//            return new TrainingDayDto(id, title, description, trainingDate, note, motivationLevel, dispositionLevel);
+//        });
+//        return trainingDayDtoStream.collect(Collectors.toSet());
+//    }
 
-        return resultDtoStream.collect(Collectors.toSet());
-    }
-
-    private Set<TrainingDayDto> trainingDayDtos(Set<TrainingDay> trainingDays){
-        Stream<TrainingDayDto> trainingDayDtoStream = trainingDays.stream().map(trainingDay -> {
-            Long id = trainingDay.getId();
-            String title = trainingDay.getTitle();
-            String description = trainingDay.getDescription();
-            Date trainingDate = trainingDay.getTrainingDate();
-            String note = trainingDay.getNote();
-            Integer motivationLevel = trainingDay.getMotivationLevel();
-            Integer dispositionLevel = trainingDay.getDispositionLevel();
-            return new TrainingDayDto(id, title, description, trainingDate, note, motivationLevel, dispositionLevel);
-        });
-        return trainingDayDtoStream.collect(Collectors.toSet());
-    }
-
-    private CalendarDto calendarDtoMapper(Set<Calendar> calendars, String trainerUsername){
-
-        Set<Calendar> filteredCalendars = calendars.stream().
-                filter(calendar -> calendar.getTrainer().getUser().getUsername().equals(trainerUsername)).collect(Collectors.toSet());
-
-        //todo ew sprawdzac czy nie ma wiecej niz 1 kalendarz
-
-        if(filteredCalendars.isEmpty()){
-            return null;
-        }
-        Calendar calendar = filteredCalendars.iterator().next();
-        CalendarDto calendarDto = new CalendarDto();
-        calendarDto.setId(calendar.getId());
-        calendarDto.setTitle(calendar.getTitle());
-        calendarDto.setTrainingDays(trainingDayDtos(calendar.getTrainingDays()));
-
-        return calendarDto;
-    }
+//    private CalendarDto calendarDtoMapper(Set<Calendar> calendars, String trainerUsername){
+//
+//        Set<Calendar> filteredCalendars = calendars.stream().
+//                filter(calendar -> calendar.getTrainer().getUser().getUsername().equals(trainerUsername)).collect(Collectors.toSet());
+//
+//        //todo ew sprawdzac czy nie ma wiecej niz 1 kalendarz
+//
+//        if(filteredCalendars.isEmpty()){
+//            return null;
+//        }
+//        Calendar calendar = filteredCalendars.iterator().next();
+//        CalendarDto calendarDto = new CalendarDto();
+//        calendarDto.setId(calendar.getId());
+//        calendarDto.setTitle(calendar.getTitle());
+//        calendarDto.setTrainingDays(trainingDayDtos(calendar.getTrainingDays()));
+//
+//        return calendarDto;
+//    }
 }

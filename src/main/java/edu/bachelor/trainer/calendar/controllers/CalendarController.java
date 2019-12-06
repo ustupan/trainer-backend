@@ -3,9 +3,9 @@ package edu.bachelor.trainer.calendar.controllers;
 
 import edu.bachelor.trainer.calendar.controllers.dtos.CalendarDto;
 import edu.bachelor.trainer.calendar.controllers.dtos.TrainingDayDto;
-import edu.bachelor.trainer.calendar.exceptions.CalendarNotExistException;
 import edu.bachelor.trainer.calendar.services.CalendarService;
 import edu.bachelor.trainer.calendar.services.TrainingDayService;
+import edu.bachelor.trainer.common.exceptions.CalendarNotExistException;
 import edu.bachelor.trainer.configuration.SecurityConstants;
 import edu.bachelor.trainer.repository.entities.Calendar;
 import edu.bachelor.trainer.repository.entities.TrainingDay;

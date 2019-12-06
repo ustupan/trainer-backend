@@ -34,12 +34,4 @@ public class TrainerController {
     public ResponseEntity athleteList(@RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
         return ResponseEntity.ok().body(trainerService.getAllTrainerAthletes(JwtToken));
     }
-
-    //    @GetMapping(value = "/trainersList")
-//    public ResponseEntity trainersList(@RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
-//        return ResponseEntity.ok().body()
-//    }
-
-    ///return ResponseEntity.ok().body(carService.getAllCarsWithParams(city, brand, priceMin, priceMax, startDate, endDate, prodDate, model));
-
 }

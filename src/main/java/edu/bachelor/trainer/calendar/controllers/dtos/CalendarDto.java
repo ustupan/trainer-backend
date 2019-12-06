@@ -1,11 +1,13 @@
 package edu.bachelor.trainer.calendar.controllers.dtos;
 
+import edu.bachelor.trainer.calendar.controllers.dtos.TrainingDayDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
+
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -17,9 +19,9 @@ public class CalendarDto {
 
     private String title;
 
-    private List<Long> trainingDaysIds;
+    private Set<TrainingDayDto> trainingDays;
 
-    private String athleteUsername;
+    private Long athleteId;
 
     private Long trainerId;
 }

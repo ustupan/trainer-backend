@@ -4,6 +4,11 @@ import edu.bachelor.trainer.configuration.SecurityConstants;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class JwtClaims {
@@ -36,5 +41,12 @@ public class JwtClaims {
     public Long getUserId(){
         return Long.parseLong(claimsJws.getBody().getId());
     }
-    public String getUserUsername() {return claimsJws.getBody().getSubject(); }
+
+    public String getUserUsername() { return claimsJws.getBody().getSubject(); }
+
+    public List<String> getUserRoles() {
+        return ((List<?>) claimsJws.getBody()
+                .get("role")).stream()
+                .map(role -> (String) role).collect(Collectors.toList());
+    }
 }

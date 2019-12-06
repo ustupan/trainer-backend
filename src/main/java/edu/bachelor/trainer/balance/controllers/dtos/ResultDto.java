@@ -20,7 +20,6 @@ public class ResultDto {
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
     private Date resultDate;
-    private Long athleteId;
     private Long value;
 }
 

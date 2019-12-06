@@ -19,7 +19,11 @@ public class AthleteDto {
 
     private String userName;
 
-    private Set<ResultDto> results;
+    private String email;
 
-    private CalendarDto calendar;
+    private String gender;
+
+    // private Set<Long> resultsIds;
+
+   // private Long calendarId;
 }

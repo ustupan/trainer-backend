@@ -30,10 +30,14 @@ public class AthleteController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-//    @GetMapping(value = "/trainersList")
-//    public ResponseEntity trainersList(@RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
-//        return ResponseEntity.ok().body()
-//    }
+    @GetMapping(value = "/trainersList")
+    public ResponseEntity trainersList(@RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken){
+        return ResponseEntity.ok().body(athleteService.getAllTrainers(JwtToken));
+    }
 
-    //return ResponseEntity.ok().body(carService.getAllCarsWithParams(city, brand, priceMin, priceMax, startDate, endDate, prodDate, model));
+    @GetMapping(value = "/calendarsList")
+    public ResponseEntity calendarsList(@RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
+        return ResponseEntity.ok().body(athleteService.getAllAthleteCalendars(JwtToken));
+    }
+
 }

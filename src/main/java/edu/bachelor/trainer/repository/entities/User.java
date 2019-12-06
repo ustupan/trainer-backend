@@ -1,6 +1,5 @@
 package edu.bachelor.trainer.repository.entities;
 
-import edu.bachelor.trainer.common.Gender;
 import lombok.*;
 
 import javax.persistence.*;
@@ -28,7 +27,7 @@ public class User {
     @Column
     private String password;
     @Column
-    private Gender gender;
+    private String gender;
     @Column
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "user_role",

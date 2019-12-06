@@ -13,7 +13,7 @@ import java.util.Set;
 
 public interface AthleteRepository extends JpaRepository<Athlete, Long> {
 
-    Optional<Athlete> getAthleteByUserId(Long userId);
+    Optional<Athlete> getAthleteById(Long id);
 
     Optional<Athlete> getAthleteByUser_Username(String username);
 

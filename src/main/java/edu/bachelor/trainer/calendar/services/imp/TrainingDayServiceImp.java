@@ -1,16 +1,14 @@
 package edu.bachelor.trainer.calendar.services.imp;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import edu.bachelor.trainer.calendar.controllers.dtos.TrainingDayDto;
-import edu.bachelor.trainer.calendar.exceptions.CalendarNotExistException;
 import edu.bachelor.trainer.calendar.services.TrainingDayService;
+import edu.bachelor.trainer.common.exceptions.CalendarNotExistException;
 import edu.bachelor.trainer.repository.CalendarRepository;
 import edu.bachelor.trainer.repository.TrainingDayRepository;
 import edu.bachelor.trainer.repository.entities.Calendar;
 import edu.bachelor.trainer.repository.entities.TrainingDay;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.Optional;
 
 @Service

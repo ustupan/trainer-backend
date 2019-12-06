@@ -24,7 +24,7 @@ public class UserDto {
 
     private String password;
 
-    private Gender gender;
+    private String gender;
 
     private String roleName;
 
