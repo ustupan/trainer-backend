@@ -36,7 +36,7 @@ public class BalanceController {
         try{
             Result result = resultService.createResult(resultDto, JwtToken);
         }catch (AthleteNotExistException e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("daasasd");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not valid athlete!");
         }
 
         return new ResponseEntity<>(HttpStatus.OK);

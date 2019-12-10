@@ -30,5 +30,11 @@ public class Result {
     @JoinColumn(name = "athlete_id", nullable = false)
     private Athlete athlete;
     @Column
+    private String unit;
+    @Column
+    private Integer motivationLevel;
+    @Column
+    private Integer dispositionLevel;
+    @Column
     private Long value;
 }
