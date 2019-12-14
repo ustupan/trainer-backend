@@ -13,7 +13,12 @@ import edu.bachelor.trainer.trainer.services.TrainerService;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class InvitationServiceImp implements InvitationService {
@@ -66,6 +71,28 @@ public class InvitationServiceImp implements InvitationService {
             }
         }
         deleteInvitation(invitationDto);
+    }
+
+    @Override
+    public Set<InvitationDto> getMyInvitations(String jwtToken) {
+        JwtClaims jwtClaims = new JwtClaims(jwtToken);
+        Optional<User> findUser = userRepository.findByUsername(jwtClaims.getUserUsername());
+        if (!findUser.isPresent()){
+            throw new UserNotExistException("No such user!");
+        }
+        Optional<Set<Invitation>> findInvitations = invitationRepository.getAllByReceiverUsername(findUser.get().getUsername());
+        if(!findInvitations.isPresent()) return new HashSet<InvitationDto>();
+
+        Set<InvitationDto> invitationDtos = new HashSet<InvitationDto>();
+        Set<Invitation> invitations = new HashSet<Invitation>(findInvitations.get());
+        Stream<InvitationDto> invitationDtoStream = invitations.stream().map(invitation -> {
+            InvitationDto invitationDto = new InvitationDto();
+            invitationDto.setId(invitation.getId());
+            invitationDto.setSenderUsername(invitation.getSenderUsername());
+            return invitationDto;
+        });
+        invitationDtos = invitationDtoStream.collect(Collectors.toSet());
+        return invitationDtos;
     }
 
     private boolean userIsTrainer(User user){

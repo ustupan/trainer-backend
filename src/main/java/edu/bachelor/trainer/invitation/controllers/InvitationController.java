@@ -20,6 +20,11 @@ public class InvitationController {
         this.invitationService = invitationService;
     }
 
+    @GetMapping(value = "/getInvitations")
+    public ResponseEntity getInvitations( @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
+        return ResponseEntity.ok().body(invitationService.getMyInvitations(JwtToken));
+    }
+
     @PostMapping(value = "/addInvitation")
     public ResponseEntity addInvitation(@Valid @RequestBody String receiverUsername, BindingResult bindingResult, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
 
