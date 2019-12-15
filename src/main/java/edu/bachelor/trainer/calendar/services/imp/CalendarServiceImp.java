@@ -4,6 +4,7 @@ import edu.bachelor.trainer.calendar.controllers.dtos.CalendarDto;
 import edu.bachelor.trainer.calendar.controllers.dtos.TrainingDayDto;
 import edu.bachelor.trainer.calendar.services.CalendarService;
 import edu.bachelor.trainer.common.exceptions.AthleteNotExistException;
+import edu.bachelor.trainer.common.exceptions.CalendarExistException;
 import edu.bachelor.trainer.common.exceptions.CalendarNotExistException;
 import edu.bachelor.trainer.common.exceptions.TrainerNotExistException;
 import edu.bachelor.trainer.repository.AthleteRepository;
@@ -60,6 +61,9 @@ public class CalendarServiceImp implements CalendarService {
         if(filtered.isEmpty()) {
             throw new AthleteNotExistException("No such athlete!");
         }
+        Athlete athlete = filtered.iterator().next();
+        long check = athlete.getCalendars().stream().filter(calendar -> calendar.getTrainer().getId().equals(trainer.getId())).count();
+        if (check > 0) throw new CalendarExistException("Calendar already exist!");
 
         Calendar calendar = new Calendar();
         calendar.setTrainer(trainer);
