@@ -7,6 +7,7 @@ import edu.bachelor.trainer.athlete.controllers.dtos.TrainingDayDto;
 import edu.bachelor.trainer.athlete.exceptions.AthleteAlreadyHasTrainerException;
 import edu.bachelor.trainer.athlete.services.AthleteService;
 import edu.bachelor.trainer.common.exceptions.AthleteNotExistException;
+import edu.bachelor.trainer.common.exceptions.CalendarNotExistException;
 import edu.bachelor.trainer.common.exceptions.TrainerNotExistException;
 import edu.bachelor.trainer.repository.AthleteRepository;
 import edu.bachelor.trainer.repository.TrainerRepository;
@@ -126,7 +127,7 @@ public class AthleteServiceImp implements AthleteService {
                 filter(calendar -> calendar.getAthlete().getUser().getUsername().equals(athleteUsername)).collect(Collectors.toSet());
 
         if(filteredCalendars.isEmpty()){
-            return null;
+            return new HashSet<>();
         }
 
         Stream<CalendarDto> calendarDtoStream = filteredCalendars.stream().map(calendar -> {

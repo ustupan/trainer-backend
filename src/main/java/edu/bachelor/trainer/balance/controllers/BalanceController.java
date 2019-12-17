@@ -8,6 +8,7 @@ import edu.bachelor.trainer.common.exceptions.AthleteNotExistException;
 import edu.bachelor.trainer.configuration.SecurityConstants;
 import edu.bachelor.trainer.repository.entities.Result;
 import edu.bachelor.trainer.security.JwtClaims;
+import edu.bachelor.trainer.trainer.controllers.dtos.AthleteDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -38,16 +39,12 @@ public class BalanceController {
         }catch (AthleteNotExistException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Not valid athlete!");
         }
-
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping(value = "/getAllAthleteResults")
-    public ResponseEntity athleteList(@Valid @RequestBody Long athleteId, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
-        return ResponseEntity.ok().body(resultService.getAllResultsByAthleteId(athleteId, JwtToken));
+    @PostMapping(value = "/getAllAthleteResults")
+    public ResponseEntity getAllAthleteResults(@Valid @RequestBody AthleteDto athleteDto, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
+        return ResponseEntity.ok().body(resultService.getAllResultsByAthleteId(athleteDto.getId(), JwtToken));
     }
-
-    //get my results...
-
 
 }

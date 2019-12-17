@@ -8,6 +8,7 @@ import java.util.Set;
 
 public interface ResultService {
     Result createResult(ResultDto resultDto, String jwtToken);
-
+    Result editResult(ResultDto resultDto, String jwtToken);
     Set<ResultDto> getAllResultsByAthleteId(Long athleteId,String jwtToken);
+    Set<ResultDto> getMyResults(String jwtToken);
 }

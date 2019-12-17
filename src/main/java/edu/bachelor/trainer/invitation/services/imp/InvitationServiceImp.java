@@ -45,6 +45,7 @@ public class InvitationServiceImp implements InvitationService {
         if(!findReceiver.isPresent() || !findSender.isPresent()){
             throw new UserNotExistException("No such user!");
         }
+
         Invitation invitation = new Invitation();
         invitation.setReceiverUsername(receiverUsername);
         invitation.setSenderUsername(jwtClaims.getUserUsername());

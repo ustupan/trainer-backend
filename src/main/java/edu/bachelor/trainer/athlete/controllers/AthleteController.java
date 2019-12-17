@@ -2,6 +2,7 @@ package edu.bachelor.trainer.athlete.controllers;
 
 
 import edu.bachelor.trainer.athlete.services.AthleteService;
+import edu.bachelor.trainer.balance.services.ResultService;
 import edu.bachelor.trainer.configuration.SecurityConstants;
 import edu.bachelor.trainer.repository.entities.Athlete;
 import org.springframework.http.HttpStatus;
@@ -15,11 +16,13 @@ import javax.validation.Valid;
 @RequestMapping(value = "/athlete")  // TODO dodac do security config
 public class AthleteController {
 
-    public AthleteController(AthleteService athleteService) {
+    public AthleteController(AthleteService athleteService, ResultService resultService) {
         this.athleteService = athleteService;
+        this.resultService = resultService;
     }
 
     private final AthleteService athleteService;
+    private final ResultService resultService;
 
     @PutMapping(value = "/addTrainer")
     public ResponseEntity addTrainer(@Valid @RequestBody String trainerUsername, BindingResult bindingResult, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
@@ -39,5 +42,11 @@ public class AthleteController {
     public ResponseEntity calendarsList(@RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
         return ResponseEntity.ok().body(athleteService.getAllAthleteCalendars(JwtToken));
     }
+
+    @GetMapping(value = "/resultsList")
+    public ResponseEntity resultsList(@RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
+        return ResponseEntity.ok().body(resultService.getMyResults(JwtToken));
+    }
+
 
 }

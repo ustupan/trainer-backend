@@ -82,4 +82,14 @@ public class CalendarController {
         return ResponseEntity.ok().body(calendarService.getCalendarByAthleteId(athleteDto.getId(),JwtToken));
     }
 
+    @PostMapping(value = "/getCalendarById")
+    public ResponseEntity getCalendarById(@Valid @RequestBody CalendarDto calendarDto, BindingResult bindingResult, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
+
+        if (bindingResult.hasErrors()){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ResponseEntity.ok().body(calendarService.getCalendarById(calendarDto.getId(),JwtToken));
+    }
+
 }

@@ -21,5 +21,8 @@ public class ResultDto {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-mm-dd")
     private Date resultDate;
     private Long value;
+    private String unit;
+    private Integer motivationLevel;
+    private Integer dispositionLevel;
 }
 

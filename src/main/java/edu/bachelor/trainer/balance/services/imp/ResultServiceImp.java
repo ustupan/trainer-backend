@@ -48,16 +48,45 @@ public class ResultServiceImp implements ResultService {
 
         Athlete athlete = findAthlete.get();
 
-
         Result result = new Result();
         result.setAthlete(athlete);
         result.setDescription(resultDto.getDescription());
         result.setDiscipline(resultDto.getDiscipline());
         result.setResultDate(resultDto.getResultDate());
         result.setValue(resultDto.getValue());
+        result.setUnit(resultDto.getUnit());
+        result.setDispositionLevel(resultDto.getDispositionLevel());
+        result.setMotivationLevel(resultDto.getMotivationLevel());
 
         return resultRepository.save(result);
     }
+
+    @Override
+    public Result editResult(ResultDto resultDto, String jwtToken) {
+
+        JwtClaims jwtClaims = new JwtClaims(jwtToken);
+
+        final Optional<Athlete> findAthlete = athleteRepository.getAthleteByUser_Username(jwtClaims.getUserUsername());
+
+        if (!findAthlete.isPresent()) {
+            throw new UsernameNotFoundException("No such athlete!");
+        }
+
+        Athlete athlete = findAthlete.get();
+        Result result = new Result();
+        result.setAthlete(athlete);
+        result.setId(resultDto.getId());
+        result.setDescription(resultDto.getDescription());
+        result.setDiscipline(resultDto.getDiscipline());
+        result.setResultDate(resultDto.getResultDate());
+        result.setValue(resultDto.getValue());
+        result.setUnit(resultDto.getUnit());
+        result.setDispositionLevel(resultDto.getDispositionLevel());
+        result.setMotivationLevel(resultDto.getMotivationLevel());
+
+        return resultRepository.save(result);
+    }
+
 
     @Override
     public Set<ResultDto> getAllResultsByAthleteId(Long athleteId, String jwtToken) {
@@ -69,9 +98,6 @@ public class ResultServiceImp implements ResultService {
         }
         Athlete athlete = findAthlete.get();
 
-        if(!athlete.getId().equals(athleteId) && jwtClaims.getUserRoles().contains("ROLE_ATHLETE")){
-            return new HashSet<ResultDto>();
-        }
         if(jwtClaims.getUserRoles().contains("ROLE_TRAINER")){
             Optional<Trainer> findTrainer = trainerRepository.getTrainerByUser_Username(jwtClaims.getUserUsername());
             if (!findTrainer.isPresent()){
@@ -82,12 +108,31 @@ public class ResultServiceImp implements ResultService {
                 return new HashSet<ResultDto>();
             }
         }
+
+
         Optional<Set<Result>> findResults = resultRepository.getAllByAthleteId(athleteId);
 
         if(!findResults.isPresent()) return new HashSet<ResultDto>();
         Set<Result> results = new HashSet<>(findResults.get());
         return resultDtoMapper(results);
     }
+
+    @Override
+    public Set<ResultDto> getMyResults(String jwtToken) {
+        JwtClaims jwtClaims = new JwtClaims(jwtToken);
+
+        final Optional<Athlete> findAthlete = athleteRepository.getAthleteByUser_Username(jwtClaims.getUserUsername());
+
+        if (!findAthlete.isPresent()) {
+            throw new UsernameNotFoundException("No such athlete!");
+        }
+        Optional<Set<Result>> findResults = resultRepository.getAllByAthleteId(findAthlete.get().getId());
+        if(!findResults.isPresent()) return new HashSet<ResultDto>();
+        Set<Result> results = new HashSet<>(findResults.get());
+
+        return resultDtoMapper(results);
+    }
+
 
     private Set<ResultDto> resultDtoMapper(Set<Result> results){
 
@@ -97,7 +142,10 @@ public class ResultServiceImp implements ResultService {
             String description = result.getDescription();
             Date resultDate = result.getResultDate();
             Long value = result.getValue();
-            return new ResultDto(id,discipline,description,resultDate,value);
+            String unit = result.getUnit();
+            Integer motivationLevel = result.getMotivationLevel();
+            Integer dispositionLevel = result.getDispositionLevel();
+            return new ResultDto(id,discipline,description,resultDate,value,unit,motivationLevel,dispositionLevel);
         });
 
         return resultDtoStream.collect(Collectors.toSet());

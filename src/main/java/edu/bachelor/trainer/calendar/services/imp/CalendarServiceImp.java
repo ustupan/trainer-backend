@@ -100,6 +100,16 @@ public class CalendarServiceImp implements CalendarService {
         return calendarDtoMapper(findCalendar.get());
     }
 
+    @Override
+    public CalendarDto getCalendarById(Long calendarId, String jwtToken) {
+        JwtClaims jwtClaims = new JwtClaims(jwtToken);
+        Optional<Calendar> findCalendar = calendarRepository.findById(calendarId);
+        if(!findCalendar.isPresent()){
+            throw new CalendarNotExistException("No calendar for an athlete!");
+        }
+        return calendarDtoMapper(findCalendar.get());
+    }
+
     private Set<TrainingDayDto> trainingDayDtos(Set<TrainingDay> trainingDays){
         Stream<TrainingDayDto> trainingDayDtoStream = trainingDays.stream().map(trainingDay -> {
             Long id = trainingDay.getId();
