@@ -17,9 +17,8 @@ import edu.bachelor.trainer.repository.entities.TrainingDay;
 import edu.bachelor.trainer.security.JwtClaims;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.Optional;
-import java.util.Set;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -73,6 +72,8 @@ public class CalendarServiceImp implements CalendarService {
         return calendarRepository.save(calendar);
     }
 
+
+
     @Override
     public CalendarDto getCalendarByAthleteId(Long athleteId, String jwtToken) {
         JwtClaims jwtClaims = new JwtClaims(jwtToken);
@@ -118,7 +119,6 @@ public class CalendarServiceImp implements CalendarService {
         CalendarDto calendarDto = new CalendarDto();
         calendarDto.setId(calendar.getId());
         calendarDto.setTitle(calendar.getTitle());
-
         calendarDto.setTrainingDays(trainingDayDtos(calendar.getTrainingDays()));
 
         return calendarDto;

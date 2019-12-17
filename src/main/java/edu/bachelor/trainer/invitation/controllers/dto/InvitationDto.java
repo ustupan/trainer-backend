@@ -16,4 +16,6 @@ public class InvitationDto {
     private String senderUsername;
 
     private Boolean accepted;
+
+    private String receiverUsername;
 }

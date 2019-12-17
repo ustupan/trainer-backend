@@ -26,13 +26,13 @@ public class InvitationController {
     }
 
     @PostMapping(value = "/addInvitation")
-    public ResponseEntity addInvitation(@Valid @RequestBody String receiverUsername, BindingResult bindingResult, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
+    public ResponseEntity addInvitation(@Valid @RequestBody InvitationDto invitationDto, BindingResult bindingResult, @RequestHeader(SecurityConstants.TOKEN_HEADER) String JwtToken) {
 
         if (bindingResult.hasErrors()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
-        Invitation invitation = invitationService.createInvitation(receiverUsername, JwtToken);
+        Invitation invitation = invitationService.createInvitation(invitationDto.getReceiverUsername(), JwtToken);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

@@ -5,4 +5,5 @@ import edu.bachelor.trainer.repository.entities.TrainingDay;
 
 public interface TrainingDayService {
     TrainingDay createTrainingDay(TrainingDayDto trainingDayDto);
+    TrainingDay editTrainingDay(TrainingDayDto trainingDayDto);
 }
