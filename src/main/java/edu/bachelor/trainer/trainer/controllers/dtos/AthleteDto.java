@@ -23,7 +23,4 @@ public class AthleteDto {
 
     private String gender;
 
-    // private Set<Long> resultsIds;
-
-   // private Long calendarId;
 }

@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/calendar")  // TODO dodac do security config
+@RequestMapping(value = "/calendar")
 public class CalendarController {
 
     private final CalendarService calendarService;

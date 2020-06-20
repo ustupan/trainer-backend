@@ -17,7 +17,7 @@ public class ResultDto {
 
     private String description;
 
-    private Date resultDate; //jak cos dac w stringu
+    private Date resultDate;
 
     private Long value;
 }

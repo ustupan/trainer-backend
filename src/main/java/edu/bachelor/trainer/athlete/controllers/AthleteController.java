@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/athlete")  // TODO dodac do security config
+@RequestMapping(value = "/athlete")
 public class AthleteController {
 
     public AthleteController(AthleteService athleteService, ResultService resultService) {

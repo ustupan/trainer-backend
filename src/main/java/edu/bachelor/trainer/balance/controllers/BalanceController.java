@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(value = "/balance")  // TODO dodac do security config
+@RequestMapping(value = "/balance")
 public class BalanceController {
 
     private final ResultService resultService;

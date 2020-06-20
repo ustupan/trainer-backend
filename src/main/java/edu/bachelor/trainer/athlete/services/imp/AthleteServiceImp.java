@@ -107,7 +107,7 @@ public class AthleteServiceImp implements AthleteService {
 
     private Set<TrainingDayDto> trainingDayDtos(Set<TrainingDay> trainingDays){
 
-        if (trainingDays.isEmpty()) return null;// todo ew rzucać wyjątek
+        if (trainingDays.isEmpty()) return null;
         Stream<TrainingDayDto> trainingDayDtoStream = trainingDays.stream().map(trainingDay -> {
             Long id = trainingDay.getId();
             String title = trainingDay.getTitle();
